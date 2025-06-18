@@ -31,6 +31,8 @@ import EditText from './components/EditText';
 import ThreeCheckboxes from './components/ThreeCheckboxes';
 import React from 'react';
 import PlanSection from './components/PlanSection';
+// Add import for Picker
+import { Picker } from '@react-native-picker/picker';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -65,6 +67,7 @@ const App = () => {
   const [searchText, setSearchText] = useState('');
 
   const [showBodyPartsModal, setShowBodyPartsModal] = useState(false);
+  const [showSeeAllModal, setShowSeeAllModal] = useState(false);
   const [bodyPartsSearch, setBodyPartsSearch] = useState('');
   const bodyParts = [
     { label: 'Shoulders', image: require('./assets/Shoulder.png') },
@@ -494,46 +497,196 @@ const App = () => {
       image: require('./assets/Thighs.png'),
       exercises: [
         {
-          name: 'Lunge',
-          duration: { beginner: 30, performer: 60, advanced: 120 },
-          reps: { beginner: 12, performer: 20, advanced: 30 },
-          image: require('./assets/Thighs.png'),
-        },
-        {
           name: 'Air Squat',
           duration: { beginner: 30, performer: 60, advanced: 120 },
           reps: { beginner: 15, performer: 25, advanced: 35 },
           image: require('./assets/Thighs.png'),
         },
         {
-          name: 'Overhead Squat',
+          name: 'Lunge',
           duration: { beginner: 30, performer: 60, advanced: 120 },
-          reps: { beginner: 15, performer: 25, advanced: 35 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
           image: require('./assets/Thighs.png'),
         },
         {
-          name: 'Ski Jumps',
+          name: 'Glutes Bridge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Thighs.png'),
+        },
+        {
+          name: 'Side Lunge Left',
+          id: 'LungeSide',
+          videoName: 'LungeSideLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Thighs.png'),
+        },
+        {
+          name: 'Side Lunge Right',
+          id: 'LungeSide',
+          videoName: 'LungeSideRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Thighs.png'),
+        },
+      ],
+    },
+    {
+      id: 'upper-body-strength',
+      name: 'Upper Body Strength',
+      level: 'All Levels',
+      time: '',
+      focus: 'Upper Body',
+      image: require('./assets/Chest.png'),
+      exercises: [
+        {
+          name: 'Push-ups',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Chest.png'),
+        },
+        {
+          name: 'Shoulder Press',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Chest.png'),
+        },
+        {
+          name: 'Shoulder Taps Plank',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Chest.png'),
+        },
+      ],
+    },
+    {
+      id: 'full-body-builder',
+      name: 'Full-Body Builder',
+      level: 'All Levels',
+      time: '',
+      focus: 'Full Body',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Air Squat',
           duration: { beginner: 30, performer: 60, advanced: 120 },
           reps: { beginner: 15, performer: 25, advanced: 35 },
-          image: require('./assets/Thighs.png'),
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Push-ups',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Overhead Squat',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'hiit-express',
+      name: 'HIIT Express',
+      level: 'All Levels',
+      time: '',
+      focus: 'Cardio',
+      image: require('./assets/JumpingJacks.png'),
+      exercises: [
+        {
+          name: 'High Knees',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Skater Hops',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Shoulder Taps Plank',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Air Squat',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+      ],
+    },
+    {
+      id: 'cardio-crusher',
+      name: 'Cardio Crusher',
+      level: 'All Levels',
+      time: '',
+      focus: 'Cardio',
+      image: require('./assets/JumpingJacks.png'),
+      exercises: [
+        {
+          name: 'High Knees',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Jumping Jacks',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Skater Hops',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
         },
         {
           name: 'Jumps',
           duration: { beginner: 30, performer: 60, advanced: 120 },
           reps: { beginner: 15, performer: 25, advanced: 35 },
-          image: require('./assets/Thighs.png'),
+          image: require('./assets/JumpingJacks.png'),
+        },
+      ],
+    },
+    {
+      id: 'sweat-circuit',
+      name: 'Sweat Circuit',
+      level: 'All Levels',
+      time: '',
+      focus: 'Cardio',
+      image: require('./assets/JumpingJacks.png'),
+      exercises: [
+        {
+          name: 'Jumping Jacks',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
         },
         {
-          name: 'Standing Knee Raise Left',
+          name: 'Oblique Crunches',
           duration: { beginner: 30, performer: 60, advanced: 120 },
           reps: { beginner: 20, performer: 30, advanced: 40 },
-          image: require('./assets/Thighs.png'),
+          image: require('./assets/JumpingJacks.png'),
         },
         {
-          name: 'Standing Knee Raise Right',
+          name: 'High Knees',
           duration: { beginner: 30, performer: 60, advanced: 120 },
           reps: { beginner: 20, performer: 30, advanced: 40 },
-          image: require('./assets/Thighs.png'),
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Crunches',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
         },
       ],
     },
@@ -725,6 +878,436 @@ const App = () => {
         },
       ],
     },
+    {
+      id: 'core-crusher',
+      name: 'Core Crusher',
+      level: 'All Levels',
+      time: '',
+      focus: 'Core & Abs',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Tuck Hold',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Oblique Crunches',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Plank',
+          id: 'PlankSideLowStatic',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'abs-reloaded',
+      name: 'Abs Reloaded',
+      level: 'All Levels',
+      time: '',
+      focus: 'Core & Abs',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Crunches',
+          id: 'Crunches',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Tuck Hold',
+          id: 'TuckHold',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Oblique Crunches',
+          id: 'StandingObliqueCrunches',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Plank',
+          id: 'PlankSideLowStatic',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'power-plyo',
+      name: 'Power Plyo',
+      level: 'All Levels',
+      time: '3 Rounds',
+      focus: 'Athletic Performance',
+      image: require('./assets/JumpingJacks.png'),
+      exercises: [
+        {
+          name: 'Jumps',
+          id: 'Jumps',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'Ski Jumps',
+          id: 'SkiJumps',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+        {
+          name: 'High Knees',
+          id: 'HighKnees',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/JumpingJacks.png'),
+        },
+      ],
+    },
+    {
+      id: 'stability-warrior',
+      name: 'Stability Warrior',
+      level: 'All Levels',
+      time: '',
+      focus: 'Athletic Performance',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Side Plank',
+          id: 'PlankSideLowStatic',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Left',
+          id: 'StandingKneeRaiseLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Right',
+          id: 'StandingKneeRaiseRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'High Plank',
+          id: 'PlankHighStatic',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'athlete-mode',
+      name: 'Athlete Mode',
+      level: 'All Levels',
+      time: '',
+      focus: 'Athletic Performance',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Skater Hops',
+          id: 'SkaterHops',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Push-ups',
+          id: 'PushupRegular',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Lunge',
+          id: 'Lunge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'High Plank',
+          id: 'PlankHighStatic',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'mobility-flow',
+      name: 'Mobility Flow',
+      level: 'All Levels',
+      time: '',
+      focus: 'Mobility & Flexibility',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Jefferson Curl',
+          id: 'JeffersonCurlRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Hamstring Mobility',
+          id: 'StandingAlternateToeTouch',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Hamstring Mobility',
+          id: 'StandingAlternateToeTouch',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Bend Left',
+          id: 'StandingSideBendLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Bend Right',
+          id: 'StandingSideBendRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'dynamic-mobility',
+      name: 'Dynamic Mobility',
+      level: 'All Levels',
+      time: '',
+      focus: 'Mobility & Flexibility',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Reverse Sit to Table Top',
+          id: 'ReverseSitToTableTop',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Left',
+          id: 'StandingKneeRaiseLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Right',
+          id: 'StandingKneeRaiseRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Bend Left',
+          id: 'StandingSideBendLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Bend Right',
+          id: 'StandingSideBendRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'posture-fixer',
+      name: 'Posture Fixer',
+      level: 'All Levels',
+      time: '',
+      focus: 'Mobility & Flexibility',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Jefferson Curl',
+          id: 'JeffersonCurlRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Glutes Bridge',
+          id: 'GlutesBridge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Hamstring Mobility',
+          id: 'StandingAlternateToeTouch',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 10, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Overhead Squat',
+          id: 'SquatRegularOverheadStatic',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'glute-blaster',
+      name: 'Glute Blaster',
+      level: 'All Levels',
+      time: '',
+      focus: 'Glutes & Lower Body',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Glutes Bridge',
+          id: 'GlutesBridge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Lunge',
+          id: 'Lunge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Side Lunge',
+          id: 'SideLunge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Air Squat',
+          id: 'AirSquat',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'side-to-side-burner',
+      name: 'Side to Side Burner',
+      level: 'All Levels',
+      time: '',
+      focus: 'Glutes & Legs',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Side Lunge',
+          id: 'SideLunge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Skater Hops',
+          id: 'SkaterHops',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 15, performer: 25, advanced: 35 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Left',
+          id: 'StandingKneeRaiseLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Right',
+          id: 'StandingKneeRaiseRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'High Knees',
+          id: 'HighKnees',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
+    {
+      id: 'low-impact-torch',
+      name: 'Low Impact Torch',
+      level: 'All Levels',
+      time: '',
+      focus: 'Glutes & Legs',
+      image: require('./assets/Trial.png'),
+      exercises: [
+        {
+          name: 'Glutes Bridge',
+          id: 'GlutesBridge',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Oblique Crunches',
+          id: 'StandingObliqueCrunches',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Left',
+          id: 'StandingKneeRaiseLeft',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Standing Knee Raise Right',
+          id: 'StandingKneeRaiseRight',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 20, performer: 30, advanced: 40 },
+          image: require('./assets/Trial.png'),
+        },
+        {
+          name: 'Reverse Sit to Table Top',
+          id: 'ReverseSitToTableTop',
+          duration: { beginner: 30, performer: 60, advanced: 120 },
+          reps: { beginner: 12, performer: 20, advanced: 30 },
+          image: require('./assets/Trial.png'),
+        },
+      ],
+    },
   ];
 
   // Map display names to Sency detector IDs
@@ -747,7 +1330,6 @@ const App = () => {
     'High Knees': 'HighKnees',
     'Ski Jumps': 'SkiJumps',
     'Skater Hops': 'SkaterHops',
-    'Lunge': 'Lunge',
     'Jumps': 'Jumps',
     'Standing Knee Raise': 'StandingKneeRaiseLeft',
     'Standing Knee Raise Left': 'StandingKneeRaiseLeft',
@@ -758,7 +1340,10 @@ const App = () => {
     'Reverse Sit to Table Top': 'ReverseSitToTableTop',
     'Crunches': 'Crunches',
     'Glutes Bridge': 'GlutesBridge',
+    'Lunge': 'Lunge',
     'Air Squat': 'SquatRegular',
+    'Side Lunge Left': 'LungeSide',
+    'Side Lunge Right': 'LungeSide',
   };
 
   // Map display names to scoring type and UI
@@ -793,6 +1378,13 @@ const App = () => {
     'Crunches': { type: SMWorkoutLibrary.ScoringType.Reps, ui: [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer] },
     'Glutes Bridge': { type: SMWorkoutLibrary.ScoringType.Reps, ui: [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer] },
     'Air Squat': { type: SMWorkoutLibrary.ScoringType.Reps, ui: [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer] },
+    'Side Lunge Left': { type: SMWorkoutLibrary.ScoringType.Reps, ui: [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer] },
+    'Side Lunge Right': { type: SMWorkoutLibrary.ScoringType.Reps, ui: [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer] },
+    // Mobility Flow plan exact names:
+    'Jefferson Curl': { type: SMWorkoutLibrary.ScoringType.Time, ui: [SMWorkoutLibrary.UIElement.Timer] },
+    'Hamstring Mobility': { type: SMWorkoutLibrary.ScoringType.Time, ui: [SMWorkoutLibrary.UIElement.Timer] },
+    'Standing Hamstring Mobility': { type: SMWorkoutLibrary.ScoringType.Time, ui: [SMWorkoutLibrary.UIElement.Timer] },
+    'Side Bend': { type: SMWorkoutLibrary.ScoringType.Time, ui: [SMWorkoutLibrary.UIElement.Timer] },
   };
 
   // Add a new state for search results
@@ -1933,6 +2525,51 @@ const App = () => {
     }
   };
 
+  const [showDIYModal, setShowDIYModal] = useState(false);
+  const [diyPlanName, setDIYPlanName] = useState('');
+  const [diyDays, setDiyDays] = useState([
+    { day: 'Monday', type: 'Full Body', customName: '' },
+    { day: 'Tuesday', type: 'Cardio', customName: '' },
+    { day: 'Wednesday', type: 'Upper Body', customName: '' },
+    { day: 'Thursday', type: 'Rest', customName: '' },
+    { day: 'Friday', type: 'Lower Body', customName: '' },
+    { day: 'Saturday', type: 'Active Recovery', customName: '' },
+    { day: 'Sunday', type: 'Rest', customName: '' },
+  ]);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [showExerciseModal, setShowExerciseModal] = useState(false);
+
+  // Get all unique exercise names from planData
+  const allExerciseNames = Array.from(new Set(
+    planData.flatMap(plan => plan.exercises?.map(ex => ex.name) || [])
+  ));
+
+  const [diyStep, setDiyStep] = useState<'planner' | 'exercises'>('planner');
+
+  const [selectedExercisesForDay, setSelectedExercisesForDay] = useState<{[key: string]: string[]}>({});
+
+  const [exerciseWorkoutName, setExerciseWorkoutName] = useState('');
+
+  // 1. Add state to control edit mode for the workout name
+  const [editingDay, setEditingDay] = useState<string | null>(null);
+  const [editDayInput, setEditDayInput] = useState('');
+
+  // Get today's day name
+  const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const todayCustom = diyDays.find(d => d.day === todayName);
+  const todayCustomName = todayCustom?.customName || todayCustom?.type || '';
+  const todayExercises = selectedExercisesForDay[todayName] || [];
+
+  // Add state for showing the custom plan modal
+  const [showCustomPlanModal, setShowCustomPlanModal] = useState(false);
+
+  // Add state for exercise durations
+  const [exerciseDurations, setExerciseDurations] = useState({});
+
+  // Add these state variables near other modal/plan state
+  const [planModalTitleOverride, setPlanModalTitleOverride] = useState<string | null>(null);
+  const [planModalImageOverride, setPlanModalImageOverride] = useState<any>(null);
+
   return (
     <SafeAreaView style={[styles.safeArea, isNightMode && { backgroundColor: '#111' }]}>
       <ScrollView contentContainerStyle={[styles.mainContainer, { flexGrow: 1 }, isNightMode && { backgroundColor: '#111' }]}>
@@ -2085,7 +2722,7 @@ const App = () => {
                 <>
                   {/* Close Button */}
                   <TouchableOpacity
-                    onPress={() => setShowPlanModal(false)}
+                    onPress={() => { setShowPlanModal(false); setPlanModalTitleOverride(null); setPlanModalImageOverride(null); }}
                     style={{
                       position: 'absolute',
                       top: Platform.OS === 'android' ? 40 : 70,
@@ -2108,12 +2745,12 @@ const App = () => {
                   </TouchableOpacity>
                   {/* Plan Image */}
                   <Image
-                    source={selectedPlan.image}
+                    source={planModalImageOverride || selectedPlan.image}
                     style={{ width: '100%', height: 220, borderTopLeftRadius: 0, borderTopRightRadius: 0, borderRadius: 0, resizeMode: 'cover' }}
                   />
                   {/* Plan Info Header and all modal content in a ScrollView */}
                   <ScrollView style={{ flex: 1, width: '100%' }} contentContainerStyle={{ padding: 24, paddingBottom: 120 }}>
-                    <Text style={{ color: isNightMode ? '#fff' : '#111', fontSize: 26, fontWeight: 'bold', marginBottom: 8 }}>{selectedPlan.name}</Text>
+                    <Text style={{ color: isNightMode ? '#fff' : '#111', fontSize: 26, fontWeight: 'bold', marginBottom: 8 }}>{planModalTitleOverride || selectedPlan.name}</Text>
                     <View style={{ flexDirection: 'row', marginTop: 8, marginBottom: 16, justifyContent: 'center', alignItems: 'center' }}>
                       <View style={{ alignItems: 'center' }}>
                         <Text style={{ color: isNightMode ? '#fff' : '#111', fontWeight: 'bold', fontSize: 16 }}>
@@ -2256,7 +2893,7 @@ const App = () => {
                                 return new SMWorkoutLibrary.SMAssessmentExercise(
                                   exerciseIdMap[exercise.name] || exercise.name.replace(/\s+/g, ''),
                                   exercise.duration[selectedLevel],
-                                  exerciseIdMap[exercise.name] || exercise.name.replace(/\s+/g, ''),
+                                  exercise.videoName || exerciseIdMap[exercise.name] || exercise.name.replace(/\s+/g, ''), // use videoName if present
                                   null,
                                   scoring.ui,
                                   exerciseIdMap[exercise.name] || exercise.name.replace(/\s+/g, ''),
@@ -2354,7 +2991,7 @@ const App = () => {
             <ScrollView style={{ maxHeight: 220 }}>
               {searchResults.map((result, idx) => {
                 if (result.type === 'plan') {
-                  return (
+  return (
                     <TouchableOpacity key={idx} onPress={() => { setSelectedPlan(result.data); setShowPlanModal(true); }} style={{ padding: 12, backgroundColor: '#fff', borderRadius: 10, marginBottom: 8, borderWidth: 1, borderColor: '#eee' }}>
                       <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#111' }}>{result.data.name}</Text>
                       <Text style={{ color: '#888', fontSize: 14 }}>Plan</Text>
@@ -2377,7 +3014,7 @@ const App = () => {
                 }
                 return null;
               })}
-            </ScrollView>
+      </ScrollView>
           )}
         </View>
       )}
@@ -2412,23 +3049,78 @@ const App = () => {
             style={{
               backgroundColor: '#111',
               borderRadius: 32,
-              paddingVertical: 10, // reduced height
+              paddingVertical: 10,
               alignItems: 'center',
               marginTop: 6,
             }}
             onPress={async () => {
               setIsLoading(true);
-              await startAssessmentSession(
-                SMWorkoutLibrary.AssessmentTypes.Fitness,
-                true,
-                ''
-              );
+              // await startAssessmentSession(
+              //   SMWorkoutLibrary.AssessmentTypes.Fitness,
+              //   true,
+              //   ''
+              // );
               setIsLoading(false);
+              setShowDIYModal(true);
             }}
           >
             <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Custom</Text>
           </TouchableOpacity>
         </View>
+      </View>
+
+      {/* Your Plan Section */}
+      <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#111', marginLeft: 16, marginBottom: 10 }}>Your Plan</Text>
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderColor: '#111',
+        borderWidth: 2,
+        borderRadius: 20,
+        padding: 16,
+        marginHorizontal: 0,
+        width: '97%',
+        alignSelf: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+        elevation: 2,
+        marginBottom: 24,
+      }}>
+        <View style={{ flex: 1 }}>
+          <Text style={{ color: '#1db954', fontSize: 16, marginBottom: 2 }}>{todayName}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#222', marginBottom: 2 }}>{todayCustomName}</Text>
+          {/* List exercises and durations */}
+          {todayExercises.length > 0 ? (
+            todayExercises.map((ex, idx) => (
+              <Text key={idx} style={{ color: '#222', fontSize: 15, marginBottom: 2 }}>• {ex} ({exerciseDurations[ex] || 30}s)</Text>
+            ))
+          ) : (
+            <Text style={{ color: '#888', fontSize: 15, marginBottom: 2 }}>No exercises selected</Text>
+          )}
+          <Text style={{ color: '#789', fontSize: 15 }}>30 min · {todayExercises.length} exercises</Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            width: 70,
+            height: 70,
+            borderRadius: 35,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: 10,
+            backgroundColor: 'transparent',
+            overflow: 'hidden',
+          }}
+          onPress={() => setShowCustomPlanModal(true)}
+        >
+          <Image
+            source={require('./assets/PlayButton2.png')}
+            style={{ width: 40, height: 40 }}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Today's Plan Section */}
@@ -2450,6 +3142,7 @@ const App = () => {
         shadowRadius: 6,
         elevation: 2,
         marginBottom: 24,
+        marginTop: -1,
       }}>
         <View style={{ flex: 1 }}>
           <Text style={{ color: '#3b82f6', fontSize: 16, marginBottom: 2 }}>Day 1</Text>
@@ -2590,6 +3283,338 @@ const App = () => {
         </TouchableOpacity>
       </View>
 
+      {/* ... existing code ... */}
+      {/* Add at the end of the main ScrollView, before </ScrollView> */}
+      <View style={{ marginTop: 8, marginBottom: 24 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#111', marginLeft: 8 }}>
+          Strength Foundation
+          </Text>
+          <TouchableOpacity onPress={() => {
+            // Add functionality for "See all" button
+            console.log('See all Strength Foundation workouts');
+            setShowSeeAllModal(true);
+          }}>
+            <Text style={{ fontSize: 16, color: '#1db954', fontWeight: 'bold', marginRight: 8 }}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={{ fontSize: 15, color: '#444', marginLeft: 8, marginBottom: 16 ,}}>
+        Build muscular strength and endurance across your entire body using bodyweight power moves.
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 8 }}>
+          <View style={{ marginRight: 18 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                const thighsPlan = planData.find(p => p.id === 'thighs' || p.name === 'Thighs');
+                if (thighsPlan) {
+                  setSelectedPlan(thighsPlan);
+                  setPlanModalTitleOverride('Leg Day Ignite');
+                  setPlanModalImageOverride(require('./assets/Trial.png'));
+                  setShowPlanModal(true);
+                }
+              }}
+            >
+              <View style={{
+                width: 260,
+                height: 160,
+                borderRadius: 22,
+                overflow: 'hidden',
+                backgroundColor: '#eee',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.10,
+                shadowRadius: 6,
+                elevation: 2,
+              }}>
+                <Image
+                  source={require('./assets/Trial.png')} // Replace with your image path
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+                <View style={{
+                  position: 'absolute',
+                  left: 0,
+                  bottom: 0,
+                  width: '100%',
+                  padding: 14,
+                  backgroundColor: 'rgba(0,0,0,0.18)',
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                  Leg Day Ignite
+                  </Text>
+                  <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                    10 Mins
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginRight: 18 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                const upperBodyPlan = planData.find(p => p.id === 'upper-body-strength' || p.name === 'Upper Body Strength');
+                if (upperBodyPlan) {
+                  setSelectedPlan(upperBodyPlan);
+                  setPlanModalTitleOverride('Upper Body Strength');
+                  setPlanModalImageOverride(require('./assets/Chest.png'));
+                  setShowPlanModal(true);
+                }
+              }}
+            >
+              <View style={{
+                width: 260,
+                height: 160,
+                borderRadius: 22,
+                overflow: 'hidden',
+                backgroundColor: '#eee',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.10,
+                shadowRadius: 6,
+                elevation: 2,
+              }}>
+                <Image
+                  source={require('./assets/Chest.png')} // Replace with your image path
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+                <View style={{
+                  position: 'absolute',
+                  left: 0,
+                  bottom: 0,
+                  width: '100%',
+                  padding: 14,
+                  backgroundColor: 'rgba(0,0,0,0.18)',
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                  Upper Body Strength
+                  </Text>
+                  <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                    8 Mins
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginRight: 18 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                const fullBodyPlan = planData.find(p => p.id === 'full-body-builder' || p.name === 'Full-Body Builder');
+                if (fullBodyPlan) {
+                  setSelectedPlan(fullBodyPlan);
+                  setPlanModalTitleOverride('Full-Body Builder');
+                  setPlanModalImageOverride(require('./assets/Trial.png'));
+                  setShowPlanModal(true);
+                }
+              }}
+            >
+              <View style={{
+                width: 260,
+                height: 160,
+                borderRadius: 22,
+                overflow: 'hidden',
+                backgroundColor: '#eee',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.10,
+                shadowRadius: 6,
+                elevation: 2,
+              }}>
+                <Image
+                  source={require('./assets/Trial.png')} // Replace with your image path
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+                <View style={{
+                  position: 'absolute',
+                  left: 0,
+                  bottom: 0,
+                  width: '100%',
+                  padding: 14,
+                  backgroundColor: 'rgba(0,0,0,0.18)',
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                  Full-Body Builder
+                  </Text>
+                  <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                    9 Mins
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* Add more cards here if needed */}
+        </ScrollView>
+      </View>
+      {/* ... existing code ... */}
+
+      {/* Cardio & Conditioning Section */}
+      <View style={{ marginTop: 8, marginBottom: 24 }}>
+        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#111', marginLeft: 8, marginBottom: 4 }}>
+        Cardio & Conditioning
+        </Text>
+        <Text style={{ fontSize: 15, color: '#444', marginLeft: 8, marginBottom: 16 ,}}>
+        Sweat it out with high-energy routines that improve stamina, heart health, and fat burn.
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 8 }}>
+          {/* Add cardio workout cards here */}
+          <View style={{ marginRight: 18 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                const hiitPlan = planData.find(p => p.id === 'hiit-express' || p.name === 'HIIT Express');
+                if (hiitPlan) {
+                  setSelectedPlan(hiitPlan);
+                  setPlanModalTitleOverride('HIIT Express');
+                  setPlanModalImageOverride(require('./assets/JumpingJacks.png'));
+                  setShowPlanModal(true);
+                }
+              }}
+            >
+              <View style={{
+                width: 260,
+                height: 160,
+                borderRadius: 22,
+                overflow: 'hidden',
+                backgroundColor: '#eee',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.10,
+                shadowRadius: 6,
+                elevation: 2,
+              }}>
+                <Image
+                  source={require('./assets/JumpingJacks.png')} // Replace with your image path
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+                <View style={{
+                  position: 'absolute',
+                  left: 0,
+                  bottom: 0,
+                  width: '100%',
+                  padding: 14,
+                  backgroundColor: 'rgba(0,0,0,0.18)',
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                  HIIT Express
+                  </Text>
+                  <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                    6 Mins
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginRight: 18 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                const cardioPlan = planData.find(p => p.id === 'cardio-crusher' || p.name === 'Cardio Crusher');
+                if (cardioPlan) {
+                  setSelectedPlan(cardioPlan);
+                  setPlanModalTitleOverride('Cardio Crusher');
+                  setPlanModalImageOverride(require('./assets/JumpingJacks.png'));
+                  setShowPlanModal(true);
+                }
+              }}
+            >
+              <View style={{
+                width: 260,
+                height: 160,
+                borderRadius: 22,
+                overflow: 'hidden',
+                backgroundColor: '#eee',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.10,
+                shadowRadius: 6,
+                elevation: 2,
+              }}>
+                <Image
+                  source={require('./assets/JumpingJacks.png')} // Replace with your image path
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+                <View style={{
+                  position: 'absolute',
+                  left: 0,
+                  bottom: 0,
+                  width: '100%',
+                  padding: 14,
+                  backgroundColor: 'rgba(0,0,0,0.18)',
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                  Cardio Crusher
+                  </Text>
+                  <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                    8 Mins
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginRight: 18 }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                const sweatCircuitPlan = planData.find(p => p.id === 'sweat-circuit' || p.name === 'Sweat Circuit');
+                if (sweatCircuitPlan) {
+                  setSelectedPlan(sweatCircuitPlan);
+                  setPlanModalTitleOverride('Sweat Circuit');
+                  setPlanModalImageOverride(require('./assets/JumpingJacks.png'));
+                  setShowPlanModal(true);
+                }
+              }}
+            >
+              <View style={{
+                width: 260,
+                height: 160,
+                borderRadius: 22,
+                overflow: 'hidden',
+                backgroundColor: '#eee',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.10,
+                shadowRadius: 6,
+                elevation: 2,
+              }}>
+                <Image
+                  source={require('./assets/JumpingJacks.png')} // Replace with your image path
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+                <View style={{
+                  position: 'absolute',
+                  left: 0,
+                  bottom: 0,
+                  width: '100%',
+                  padding: 14,
+                  backgroundColor: 'rgba(0,0,0,0.18)',
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                  Sweat Circuit
+                  </Text>
+                  <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                    10 Mins
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* Add more cardio workout cards here */}
+        </ScrollView>
+      </View>
+      {/* ... existing code ... */}
       </ScrollView>
       <Modal
         visible={showBodyPartsModal}
@@ -2675,7 +3700,7 @@ const App = () => {
               </View>
             </ScrollView>
           )}
-        </SafeAreaView>
+    </SafeAreaView>
       </Modal>
 
       {/* Today's Plan Modal */}
@@ -2697,7 +3722,7 @@ const App = () => {
                 >
                   <Text style={{ fontSize: 22, color: '#E53935', fontWeight: 'bold', lineHeight: 24 }}>×</Text>
                 </TouchableOpacity>
-                <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#111', textAlign: 'center', marginBottom: 18, marginTop: 10 }}>Today's Plan</Text>
+                <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#111', textAlign: 'center', marginBottom: 18, marginTop: -5 }}>Today's Recommended Plan</Text>
                 {todaysPlanSections.map((section, idx) => (
                   <View key={section.title} style={{ marginBottom: 18, backgroundColor: section.color + '22', borderRadius: 12, padding: 12 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
@@ -2722,209 +3747,1136 @@ const App = () => {
           </SafeAreaView>
         </Modal>
       )}
+
+      {/* DIY Workouts Modal */}
+      <Modal
+        visible={showDIYModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => {
+          if (diyStep === 'exercises') {
+            setDiyStep('planner');
+          } else {
+            setShowDIYModal(false);
+          }
+        }}
+      >
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+          {diyStep === 'planner' ? (
+            <>
+              {/* Header */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 18, paddingBottom: 0 }}>
+                <TouchableOpacity onPress={() => setShowDIYModal(false)} style={{ position: 'absolute', left: 18, padding: 6 }}>
+                  <Text style={{ fontSize: 26, color: '#222', fontWeight: 'bold' }}>{'←'}</Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#111', textAlign: 'center', fontFamily: 'Lexend' }}>DIY Workouts</Text>
+              </View>
+              <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#111', marginBottom: 18, marginTop: 18, fontFamily: 'Lexend', marginLeft: 18 }}>Create Your Weekly Workout</Text>
+              <ScrollView contentContainerStyle={{ padding: 18, paddingTop: 0 }}>
+                {/* Days List */}
+                {diyDays.map((item, idx) => (
+                  <TouchableOpacity
+                    key={item.day}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginBottom: 28,
+                      backgroundColor: selectedDay === item.day ? '#e8f5e9' : 'transparent',
+                      borderRadius: 16,
+                      borderWidth: selectedDay === item.day ? 2 : 0,
+                      borderColor: selectedDay === item.day ? '#111' : 'transparent',
+                      paddingVertical: selectedDay === item.day ? 16 : 0,
+                      paddingHorizontal: selectedDay === item.day ? 10 : 0,
+                      minHeight: selectedDay === item.day ? 72 : undefined,
+                    }}
+                    onPress={() => setSelectedDay(item.day)}
+                    activeOpacity={0.7}
+                  >
+                    <View style={{ backgroundColor: '#f2f6fa', borderRadius: 12, width: 44, height: 44, justifyContent: 'center', alignItems: 'center', marginRight: 16 }}>
+                      <Text style={{ fontSize: 22, color: '#222' }}>📅</Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#111', fontFamily: 'Lexend' }}>{item.day}</Text>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          color: '#3b4a5a',
+                          marginTop: 2,
+                          // fontFamily: 'Lexend',
+                          maxWidth: 220, // Increased width for a wider display area
+                          flexWrap: 'wrap',
+                        }}
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                      >
+                        {item.customName || item.type}
+                      </Text>
+                      {/* Edit Day Button and Input */}
+                      {selectedDay === item.day && editingDay !== item.day && (
+                        <TouchableOpacity
+                          style={{ marginTop: 6, alignSelf: 'flex-start', backgroundColor: '#1976D2', borderRadius: 8, paddingVertical: 4, paddingHorizontal: 12 }}
+                          onPress={() => {
+                            setEditingDay(item.day);
+                            setEditDayInput(item.customName || '');
+                          }}
+                        >
+                          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Edit Day</Text>
+                        </TouchableOpacity>
+                      )}
+                      {editingDay === item.day && (
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                          <TextInput
+                            style={{
+                              fontSize: 16,
+                              color: '#222',
+                              backgroundColor: '#fff',
+                              borderRadius: 6,
+                              paddingHorizontal: 10,
+                              borderWidth: 1.5,
+                              borderColor: '#1976D2',
+                              minHeight: 36,
+                              maxHeight: 60,
+                              width: 110, // Reduced width for a more compact input box
+                              textAlignVertical: 'top',
+                            }}
+                            placeholder="Workout..."
+                            placeholderTextColor="#b0b8c1"
+                            value={editDayInput}
+                            onChangeText={setEditDayInput}
+                            autoFocus
+                            multiline={true}
+                            numberOfLines={2}
+                          />
+                          <TouchableOpacity
+                            style={{ marginLeft: 8, backgroundColor: '#1db954', borderRadius: 6, paddingVertical: 4, paddingHorizontal: 10 }}
+                            onPress={() => {
+                              const updated = diyDays.map(d => d.day === item.day ? { ...d, customName: editDayInput } : d);
+                              setDiyDays(updated);
+                              setEditingDay(null);
+                            }}
+                          >
+                            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Save</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={{ marginLeft: 4, backgroundColor: '#E53935', borderRadius: 6, paddingVertical: 4, paddingHorizontal: 10 }}
+                            onPress={() => setEditingDay(null)}
+                          >
+                            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Cancel</Text>
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              {/* Bottom Buttons */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 18, paddingTop: 0 }}>
+                {/* Removed Save Plan button */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#1976D2', borderRadius: 24, paddingVertical: 14, flex: 1, alignItems: 'center' }}
+                  onPress={() => {
+                    if (!selectedDay) {
+                      Alert.alert('Please select a day first.');
+                      return;
+                    }
+                    setExerciseWorkoutName(diyDays.find(d => d.day === selectedDay)?.customName || '');
+                    setDiyStep('exercises');
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16, fontFamily: 'Lexend' }}>Add Exercises</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    // Save selected exercises for the day (implement your save logic here)
+                    console.log('DIY Workout State Saved:', {
+                      selectedDay: selectedDay,
+                      exercises: selectedDay ? selectedExercisesForDay[selectedDay] || [] : []
+                    });
+                    setDiyStep('planner');
+                  }}
+                  style={{ position: 'absolute', right: 18, padding: 6 }}
+                >
+                  <Text style={{ fontSize: 18, color: '#1976D2', fontWeight: 'bold', fontFamily: 'Lexend' }}>Save</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <>
+              {/* Exercise Selection Header */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 18, paddingBottom: 0 }}>
+                <TouchableOpacity onPress={() => setDiyStep('planner')} style={{ position: 'absolute', left: 18, padding: 6 }}>
+                  <Text style={{ fontSize: 26, color: '#222', fontWeight: 'bold' }}>{'←'}</Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#111', textAlign: 'center', fontFamily: 'Lexend' }}>Select Exercises</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    // Save selected exercises for the day (implement your save logic here)
+                    console.log('DIY Workout State Saved:', {
+                      selectedDay: selectedDay,
+                      exercises: selectedDay ? selectedExercisesForDay[selectedDay] || [] : []
+                    });
+                    setDiyStep('planner');
+                  }}
+                  style={{ position: 'absolute', right: 18, padding: 6 }}
+                >
+                  <Text style={{ fontSize: 18, color: '#1976D2', fontWeight: 'bold', fontFamily: 'Lexend' }}>Save</Text>
+                </TouchableOpacity>
+              </View>
+              {/* Workout Name Input */}
+              <ScrollView contentContainerStyle={{ padding: 18, paddingLeft: 32 }}>
+                <Text style={{ fontSize: 12, color: '#666', marginBottom: 10, fontStyle: 'italic' }}>
+                  Tap to add exercise • Long press to remove
+                </Text>
+                {allExerciseNames.map((ex, idx) => {
+                  const dayExercises = selectedExercisesForDay[selectedDay || ''] || [];
+                  const selected = dayExercises.filter(e => e === ex).length > 0;
+                  const count = dayExercises.filter(e => e === ex).length;
+                  return (
+                    <TouchableOpacity
+                      key={ex}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingVertical: 12,
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#eee',
+                      }}
+                      onPress={() => {
+                        if (!selectedDay) {
+                          Alert.alert('Please select a day first.');
+                          return;
+                        }
+                        console.log(`Added exercise to ${selectedDay}:`, ex);
+                        setSelectedExercisesForDay(prev => ({ 
+                            ...prev, 
+                            [selectedDay]: [...(prev[selectedDay] || []), ex] 
+                        }));
+                      }}
+                      onLongPress={() => {
+                        if (!selectedDay) {
+                          Alert.alert('Please select a day first.');
+                          return;
+                        }
+                        setSelectedExercisesForDay(prev => {
+                          const dayExercises = prev[selectedDay] || [];
+                          const lastIndex = dayExercises.lastIndexOf(ex);
+                          if (lastIndex !== -1) {
+                            const newExercises = [...dayExercises];
+                            newExercises.splice(lastIndex, 1);
+                            return { ...prev, [selectedDay]: newExercises };
+                          }
+                          return prev;
+                        });
+                      }}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={{ fontSize: 17, color: '#222', fontFamily: 'Lexend', flex: 1 }}>{ex}</Text>
+                      {selected && <Text style={{ fontSize: 14, color: '#1db954', marginLeft: 8 }}>({count})</Text>}
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            </>
+          )}
+        </SafeAreaView>
+      </Modal>
+
+      {/* Custom Plan Modal */}
+      <Modal
+        visible={showCustomPlanModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setShowCustomPlanModal(false)}
+      >
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16 }}>
+            <TouchableOpacity onPress={() => setShowCustomPlanModal(false)}>
+              <Text style={{ color: '#2196F3', fontSize: 26, fontWeight: 'bold' }}>{'←'}</Text>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#111', textAlign: 'center', flex: 1 }}>Your Plan for {todayName}</Text>
+          </View>
+          <ScrollView contentContainerStyle={{ padding: 18 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1db954', marginBottom: 10 }}>{todayCustomName}</Text>
+            {/* List selected exercises for today with duration picker */}
+            {(todayCustom && todayExercises.length > 0) ? (
+              todayExercises.map((ex, idx) => (
+                <View key={idx} style={{ marginBottom: 20 }}>
+                  <Text style={{ fontSize: 16, color: '#222', marginBottom: 4 ,marginLeft: 10 }}>• {ex}</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 , marginLeft: 10 }}>
+                    <Text style={{ marginRight: 8 }}>Duration:</Text>
+                    {[30, 60, 90, 120].map((val) => (
+                      <TouchableOpacity
+                        key={val}
+                        style={{
+                          backgroundColor: exerciseDurations[ex] === val ? '#1db954' : '#eee',
+                          borderRadius: 16,
+                          paddingVertical: 6,
+                          paddingHorizontal: 14,
+                          marginRight: 8,
+                          marginLeft: 5,
+                        }}
+                        onPress={() => setExerciseDurations(prev => ({ ...prev, [ex]: val } ))}
+                      >
+                        <Text style={{ color: exerciseDurations[ex] === val ? '#fff' : '#222', fontWeight: 'bold' }}>{val}s</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              ))
+            ) : (
+              <Text style={{ color: '#E53935', fontSize: 16 }}>No exercises selected for today.</Text>
+            )}
+          </ScrollView>
+          {/* Start Button */}
+          {(todayCustom && todayExercises.length > 0) && (
+            <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: 18, backgroundColor: '#fff' }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#1976D2', // blue
+                  borderRadius: 12,
+                  paddingVertical: 16,
+                  alignItems: 'center'
+                }}
+                onPress={async () => {
+                  setShowCustomPlanModal(false);
+                  setTimeout(async () => {
+                    try {
+                      const exercises = todayExercises.map(ex => {
+                        const duration = exerciseDurations[ex] || 30;
+                        const detectorId = exerciseIdMap[ex] || ex.replace(/\s+/g, '');
+                        const scoring = exerciseScoringMap[ex] || { type: SMWorkoutLibrary.ScoringType.Reps, ui: [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer] };
+                        return new SMWorkoutLibrary.SMAssessmentExercise(
+                          detectorId,
+                          duration,
+                          detectorId,
+                          null,
+                          scoring.ui,
+                          detectorId,
+                          '',
+                          new SMWorkoutLibrary.SMScoringParams(
+                            scoring.type,
+                            0.3,
+                            scoring.type === SMWorkoutLibrary.ScoringType.Time ? duration : null,
+                            scoring.type === SMWorkoutLibrary.ScoringType.Reps ? 10 : null,
+                            null,
+                            null
+                          ),
+                          '',
+                          ex,
+                          scoring.type === SMWorkoutLibrary.ScoringType.Time ? 'Hold the position' : 'Complete the exercise',
+                          scoring.type === SMWorkoutLibrary.ScoringType.Time ? 'Time' : 'Reps',
+                          scoring.type === SMWorkoutLibrary.ScoringType.Time ? 'seconds held' : 'clean reps'
+                        );
+                      });
+                      const customWorkout = new SMWorkoutLibrary.SMWorkout(
+                        `custom-${todayName.toLowerCase()}`,
+                        todayCustomName,
+                        null,
+                        null,
+                        exercises,
+                        null,
+                        null,
+                        null
+                      );
+                      const result = await startCustomAssessment(customWorkout, null, true, false);
+                      if (result && result.summary) {
+                        setSummaryMessage(result.summary);
+                        let parsed = null;
+                        try {
+                          parsed = JSON.parse(result.summary);
+                          setParsedSummaryData(parsed);
+                        } catch (e) {
+                          setParsedSummaryData(null);
+                        }
+                        setModalVisible(true);
+                      }
+                    } catch (e) {
+                      console.log(e);
+                      Alert.alert('Workout Error', e.message);
+                    }
+                  }, 700);
+                }}
+              >
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20 }}>Start</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </SafeAreaView>
+      </Modal>
+
+      {/* See All Modal */}
+      <Modal
+        visible={showSeeAllModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setShowSeeAllModal(false)}
+      >
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16 }}>
+            <TouchableOpacity onPress={() => setShowSeeAllModal(false)}>
+              <Text style={{ color: '#2196F3', fontSize: 26, fontWeight: 'bold' }}>{'←'}</Text>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#111', textAlign: 'center', flex: 1 , marginRight: 50 }}>Training Plans</Text>
+          </View>
+          <ScrollView contentContainerStyle={{ padding: 18 }}>
+            {/* <Text style={{ fontSize: 16, color: '#666', marginBottom: 20, lineHeight: 22 }}>
+              Build muscular strength and endurance across your entire body using bodyweight power moves.
+            </Text> */}
+            
+           
+
+            
+           
+           
+            {/* First Carousel - Strength Plans */}
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111', marginBottom: 8, marginTop: 8 }}>Strength Foundation</Text>
+            <Text style={{ fontSize: 14, color: '#666', marginBottom: 12, lineHeight: 20 }}>
+              Build muscular strength and endurance across your entire body using bodyweight power moves.
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 16 }}>
+              {planData.filter(plan => [
+                'Leg Day Ignite',
+                'Upper Body Strength',
+                'Full-Body Builder',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+
+            {/* Second Carousel - Cardio Plans */}
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111', marginBottom: 8, marginTop: 16 }}>Cardio & Conditioning</Text>
+            <Text style={{ fontSize: 14, color: '#666', marginBottom: 12, lineHeight: 20 }}>
+              Sweat it out with high-energy routines that improve stamina, heart health, and fat burn.
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 24 }}>
+              {planData.filter(plan => [
+                'HIIT Express',
+                'Cardio Crusher',
+                'Sweat Circuit',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+
+            {/* Third Carousel - Core Plans */}
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111', marginBottom: 8, marginTop: 16 }}>Core & Abs Engine</Text>
+            <Text style={{ fontSize: 14, color: '#666', marginBottom: 12, lineHeight: 20 }}>
+              Sculpt and strengthen your midsection with stability, crunch, and core isolation exercises.
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 24 }}>
+              {planData.filter(plan => [
+                'Core Crusher',
+                'Abs Reloaded',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+
+            {/* Fourth Carousel - Athletic Plans */}
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111', marginBottom: 8, marginTop: 16 }}>Athletic Mode</Text>
+            <Text style={{ fontSize: 14, color: '#666', marginBottom: 12, lineHeight: 20 }}>
+              Train like an athlete with agility, balance, and explosive performance-based workouts.
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 24 }}>
+              {planData.filter(plan => [
+                'Power Plyo',
+                'Stability Warrior',
+                'Athlete Mode',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+            {/* Add more cards here if needed */}
+
+            {/* Fifth Carousel - Mobility Plans */}
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111', marginBottom: 8, marginTop: 16 }}>Mobility & Flexibility Flow</Text>
+            <Text style={{ fontSize: 14, color: '#666', marginBottom: -13, lineHeight: 20 }}>
+              Open up tight areas, improve posture, and increase range of motion through mobility drills.
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 24 }}>
+              {planData.filter(plan => [
+                'Mobility Master',
+                'Flexibility Flow',
+                'Recovery Stretch',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+            {/* Add more cards here if needed */}
+
+            {/* Sixth Carousel - Mobility Plans */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 24 }}>
+              {planData.filter(plan => [
+                'Mobility Flow',
+                'Dynamic Mobility',
+                'Posture Fixer',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+            {/* Lower Body Sculpt Section */}
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111', marginBottom: 8, marginTop: 1 }}>Lower Body Sculpt</Text>
+            <Text style={{ fontSize: 14, color: '#666',  lineHeight: 20 }}>
+              Tone and strengthen your hips, thighs, and glutes with targeted moves.
+            </Text>
+            {/* Seventh Carousel - Mobility Plans */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8, paddingBottom: 24 }}>
+              {planData.filter(plan => [
+                'Reverse Sit to Table Top',
+                'Standing Knee Raise Left',
+                'Standing Knee Raise Right',
+                'Side Bend Left',
+                'Side Bend Right',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+            {/* Add more cards here if needed */}
+
+            {/* Eighth Carousel - Mobility Plans */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 8 }}>
+              {planData.filter(plan => [
+                'Jefferson Curl',
+                'Glutes Bridge',
+                'Hamstring Mobility',
+                'Overhead Squat',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+
+            {/* Glute Blaster & Side to Side Burner - Combined Carousel */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8, paddingTop: 0, paddingBottom: 0 }}>
+              {planData.filter(plan => [
+                'Glute Blaster',
+                'Side to Side Burner',
+                'Low Impact Torch',
+              ].includes(plan.name)).map((plan, idx) => (
+                <View key={plan.id || plan.name} style={{ marginRight: 18 }}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      setSelectedPlan(plan);
+                      setPlanModalTitleOverride(plan.name);
+                      setPlanModalImageOverride(plan.image);
+                      setShowSeeAllModal(false);
+                      setShowPlanModal(true);
+                    }}
+                  >
+                    <View style={{
+                      width: 260,
+                      height: 160,
+                      borderRadius: 22,
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      marginBottom: 0,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.10,
+                      shadowRadius: 6,
+                      elevation: 2,
+                      marginTop: 0,
+                    }}>
+                      <Image
+                        source={plan.image}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        width: '100%',
+                        padding: 14,
+                        backgroundColor: 'rgba(0,0,0,0.18)',
+                      }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 20, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.name}
+                        </Text>
+                        <Text style={{ color: '#fff', fontSize: 15, marginTop: 2, textShadowColor: '#000', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 2 }}>
+                          {plan.time || `${plan.exercises.length} Exercises`}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 
-async function configureSMKitUI() {
-  setIsLoading(true);
-  try {
-    
-    var res = await configure("public_live_a5jSYbzaDk7sgalguc");
-    console.log("Configuration successful:", res);
-    setIsLoading(false);
-    setDidConfig(true);
-  } catch (e) {
-    setIsLoading(false);
-    Alert.alert('Configure Failed', e.message, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
-  }
-}
-
-async function startWorkoutProgramSession() {
-  try {
-    const parsedWeek = parseInt(week, 10);
-    if (isNaN(parsedWeek)) {
-      throw new Error('Invalid week number');
-    }
-    var config = new SMWorkoutLibrary.WorkoutConfig(
-      parsedWeek,
-      bodyZone,
-      difficulty,
-      duration,
-      language,
-      name,
-    );
-    var result = await startWorkoutProgram(config);
-    console.log(result.summary);
-    console.log(result.didFinish);
-  } catch (e) {
-    Alert.alert('Unable to start workout program', e.message, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
-  }
-}
-async function startAssessmentSession(
-  type: SMWorkoutLibrary.AssessmentTypes,
-  showSummary: boolean,
-  customAssessmentID: string
-) {
-  try {
-    console.log('Starting assessment with type:', type);
-    const result = await startAssessment(
-      type,
-      showSummary,
-      null,
-      false,
-      customAssessmentID
-    );
-    console.log('Assessment result:', result.summary);
-    console.log('Did finish:', result.didFinish);
-    // Set summary and show modal directly (cross-platform)
-    setSummaryMessage(result.summary);
-    let parsed: any = null;
+  async function configureSMKitUI() {
+    setIsLoading(true);
     try {
-      parsed = JSON.parse(result.summary);
-      setParsedSummaryData(parsed);
+      
+      var res = await configure("public_live_a5jSYbzaDk7sgalguc");
+      console.log("Configuration successful:", res);
+      setIsLoading(false);
+      setDidConfig(true);
     } catch (e) {
-      setParsedSummaryData(null);
+      setIsLoading(false);
+      Alert.alert('Configure Failed', e.message, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
     }
-    setModalVisible(true);
-  } catch (e) {
-    console.error('Assessment error:', e);
-    Alert.alert('Unable to start assessment', e.message);
   }
-}
 
-async function startSMKitUICustomWorkout() {
-  try {
-    var exercises = [
-      new SMWorkoutLibrary.SMAssessmentExercise(
-        'SquatRegularOverheadStatic',
-        30,
-        'SquatRegularOverheadStatic',
+  async function startWorkoutProgramSession() {
+    try {
+      const parsedWeek = parseInt(week, 10);
+      if (isNaN(parsedWeek)) {
+        throw new Error('Invalid week number');
+      }
+      var config = new SMWorkoutLibrary.WorkoutConfig(
+        parsedWeek,
+        bodyZone,
+        difficulty,
+        duration,
+        language,
+        name,
+      );
+      var result = await startWorkoutProgram(config);
+      console.log(result.summary);
+      console.log(result.didFinish);
+    } catch (e) {
+      Alert.alert('Unable to start workout program', e.message, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+    }
+  }
+  async function startAssessmentSession(
+    type: SMWorkoutLibrary.AssessmentTypes,
+    showSummary: boolean,
+    customAssessmentID: string
+  ) {
+    try {
+      console.log('Starting assessment with type:', type);
+      const result = await startAssessment(
+        type,
+        showSummary,
         null,
-        [
-          SMWorkoutLibrary.UIElement.GaugeOfMotion,
-          SMWorkoutLibrary.UIElement.Timer,
-        ],
-        'SquatRegularOverheadStatic',
-        'stam',
-        new SMWorkoutLibrary.SMScoringParams(
-          SMWorkoutLibrary.ScoringType.Time,
-          0.5,
-          20,
-          null,
-          null,
-          null,
-        ),
-        '',
-        'SquatRegularOverheadStatic',
-        'Subtitle',
-        'timeInPosition',
-        'clean reps'
-      ),
-      new SMWorkoutLibrary.SMAssessmentExercise(
-        'Jefferson Curl',
-        30,
-        'JeffersonCurlRight',
-        null,
-        [
-          SMWorkoutLibrary.UIElement.GaugeOfMotion,
-          SMWorkoutLibrary.UIElement.Timer,
-        ],
-        'JeffersonCurlRight',
-        'stam',
-        new SMWorkoutLibrary.SMScoringParams(
-          SMWorkoutLibrary.ScoringType.Time,
-          0.5,
-          20,
-          null,
-          null,
-          null,
-        ),
-        '',
-        'JeffersonCurlRight',
-        'Subtitle',
-        'timeInPosition',
-        'clean reps'
-      ),
-      new SMWorkoutLibrary.SMAssessmentExercise(
-        'Push-Up',
-        30,
-        'PushupRegular',
-        null,
-        [
-          SMWorkoutLibrary.UIElement.RepsCounter,
-          SMWorkoutLibrary.UIElement.Timer,
-        ],
-        'PushupRegular',
-        'stam',
-        new SMWorkoutLibrary.SMScoringParams(
-          SMWorkoutLibrary.ScoringType.Reps,
-          0.5,
-          null,
-          6,
-          null,
-          null,
-        ),
-        '',
-        'PushupRegular',
-        'Subtitle',
-        'Reps',
-        'clean reps'
-      ),
-      new SMWorkoutLibrary.SMAssessmentExercise(
-        'LungeFrontRight',
-        30,
-        'LungeFrontRight',
-        null,
-        [
-          SMWorkoutLibrary.UIElement.GaugeOfMotion,
-          SMWorkoutLibrary.UIElement.Timer,
-        ],
-        'LungeFront',
-        'stam',
-        new SMWorkoutLibrary.SMScoringParams(
-          SMWorkoutLibrary.ScoringType.Reps,
-          0.5,
-          null,
-          20,
-          null,
-          null,
-        ),
-        '',
-        'LungeFrontRight',
-        'Subtitle',
-        'timeInPosition',
-        'clean reps'
-      ),
-      new SMWorkoutLibrary.SMAssessmentExercise(
-        'LungeFrontLeft',
-        30,
-        'LungeFrontLeft',
-        null,
-        [
-          SMWorkoutLibrary.UIElement.GaugeOfMotion,
-          SMWorkoutLibrary.UIElement.Timer,
-        ],
-        'LungeFront',
-        'stam',
-        new SMWorkoutLibrary.SMScoringParams(
-          SMWorkoutLibrary.ScoringType.Reps,
-          0.5,
-          null,
-          20,
-          null,
-          null,
-        ),
-        '',
-        'LungeFrontLeft',
-        'Subtitle',
-        'timeInPosition',
-        'clean reps'
-      ),
-    ];
+        false,
+        customAssessmentID
+      );
+      console.log('Assessment result:', result.summary);
+      console.log('Did finish:', result.didFinish);
+      // Set summary and show modal directly (cross-platform)
+      setSummaryMessage(result.summary);
+      let parsed: any = null;
+      try {
+        parsed = JSON.parse(result.summary);
+        setParsedSummaryData(parsed);
+      } catch (e) {
+        setParsedSummaryData(null);
+      }
+      setModalVisible(true);
+    } catch (e) {
+      console.error('Assessment error:', e);
+      Alert.alert('Unable to start assessment', e.message);
+    }
+  }
 
-    var assessment = new SMWorkoutLibrary.SMWorkout(
-      '50',
-      'demo workout',
+  async function startSMKitUICustomWorkout() {
+    try {
+      var exercises = [
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'SquatRegularOverheadStatic',
+          30,
+          'SquatRegularOverheadStatic',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.GaugeOfMotion,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'SquatRegularOverheadStatic',
+          'stam',
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Time,
+            0.5,
+            20,
+            null,
+            null,
+            null,
+          ),
+          '',
+          'SquatRegularOverheadStatic',
+          'Subtitle',
+          'timeInPosition',
+          'clean reps'
+        ),
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'Jefferson Curl',
+          30,
+          'JeffersonCurlRight',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.GaugeOfMotion,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'JeffersonCurlRight',
+          'stam',
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Time,
+            0.5,
+            20,
+            null,
+            null,
+            null,
+          ),
+          '',
+          'JeffersonCurlRight',
+          'Subtitle',
+          'timeInPosition',
+          'clean reps'
+        ),
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'Push-Up',
+          30,
+          'PushupRegular',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.RepsCounter,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'PushupRegular',
+          'stam',
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Reps,
+            0.5,
+            null,
+            6,
+            null,
+            null,
+          ),
+          '',
+          'PushupRegular',
+          'Subtitle',
+          'Reps',
+          'clean reps'
+        ),
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'LungeFrontRight',
+          30,
+          'LungeFrontRight',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.GaugeOfMotion,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'LungeFront',
+          'stam',
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Reps,
+            0.5,
+            null,
+            20,
+            null,
+            null,
+          ),
+          '',
+          'LungeFrontRight',
+          'Subtitle',
+          'timeInPosition',
+          'clean reps'
+        ),
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'LungeFrontLeft',
+          30,
+          'LungeFrontLeft',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.GaugeOfMotion,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'LungeFront',
+          'stam',
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Reps,
+            0.5,
+            null,
+            20,
+            null,
+            null,
+          ),
+          '',
+          'LungeFrontLeft',
+          'Subtitle',
+          'timeInPosition',
+          'clean reps'
+        ),
+      ];
+
+      var assessment = new SMWorkoutLibrary.SMWorkout(
+        '50',
+        'demo workout',
         null,
         null,
         exercises,
@@ -3100,6 +5052,56 @@ async function startSMKitUICustomWorkout() {
           ),
           failedSound,
           'StandingSideBendRight',
+          'Subtitle',
+          'Time',
+          'seconds held'
+        ),
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'Jefferson Curl',
+          35,
+          'JeffersonCurlRight',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.GaugeOfMotion,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'JeffersonCurlRight',
+          successSound,
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Time,
+            0.3,
+            15,
+            null,
+            null,
+            null,
+          ),
+          failedSound,
+          'JeffersonCurlRight',
+          'Subtitle',
+          'Time',
+          'seconds held'
+        ),
+        new SMWorkoutLibrary.SMAssessmentExercise(
+          'Standing Hamstring Mobility',
+          35,
+          'StandingAlternateToeTouch',
+          null,
+          [
+            SMWorkoutLibrary.UIElement.GaugeOfMotion,
+            SMWorkoutLibrary.UIElement.Timer,
+          ],
+          'StandingAlternateToeTouch',
+          successSound,
+          new SMWorkoutLibrary.SMScoringParams(
+            SMWorkoutLibrary.ScoringType.Time,
+            0.3,
+            15,
+            null,
+            null,
+            null,
+          ),
+          failedSound,
+          'StandingAlternateToeTouch',
           'Subtitle',
           'Time',
           'seconds held'
@@ -3543,7 +5545,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 8,
+                      marginBottom: 8,
   },
   bannerSubtitle: {
     fontSize: 16,
@@ -3640,8 +5642,8 @@ const styles = StyleSheet.create({
     width: 150, // Fixed width for cards
     height: 180, // Fixed height for cards
     justifyContent: 'space-between',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
@@ -3716,7 +5718,7 @@ const styles = StyleSheet.create({
   
   // New styles for the two lines
   goalLine: {
-    position: 'absolute',
+                        position: 'absolute',
     width: '90%',
     height: 2,
     backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent white for goal
@@ -3733,7 +5735,7 @@ const styles = StyleSheet.create({
   },
   // New styles for the progress bar visualization
   progressBarContainer: {
-    width: '100%',
+                        width: '100%',
     height: 8, // Thickness of the progress bar
     backgroundColor: 'rgba(255, 255, 255, 0.3)', // Light track
     borderRadius: 4,
@@ -3748,4 +5750,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
